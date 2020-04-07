@@ -108,6 +108,7 @@ with open(inputfile, 'r') as csvFile:
                 log_file.write('\n')
 
         #ghi ra file output
+        #write body
         for x in range(nrow):
             for y in range(ncol):
                 if (data[x][y]=='?'):
