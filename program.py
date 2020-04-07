@@ -1,4 +1,4 @@
-import sys, getopt, csv
+import sys, csv
 
 #read cac tham so trong command line   
 option = sys.argv[1]
@@ -108,13 +108,6 @@ with open(inputfile, 'r') as csvFile:
                 log_file.write('\n')
 
         #ghi ra file output
-        #write header
-        for x in range(1):
-            for y in range(0, ncol):
-                output_file.write(data[x][y])
-                if (y < ncol - 1):
-                    output_file.write(',')
-        #write body
         for x in range(nrow):
             for y in range(ncol):
                 if (data[x][y]=='?'):
