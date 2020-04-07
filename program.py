@@ -1,12 +1,12 @@
 import sys, getopt, csv
 
-#read cac tham so command line   
+#read cac tham so trong command line   
 option = sys.argv[1]
 inputfile = sys.argv[2]
 outputfile = sys.argv[3]
 logfile = sys.argv[4]
   
-# files
+# cac file de write
 log_file = open(logfile,"w")
 output_file = open(outputfile,'w')
 
@@ -27,6 +27,7 @@ with open(inputfile, 'r') as csvFile:
     log_file.write(str(nrow - 1) + '\n')
     log_file.write(str(ncol) + '\n')
 
+    #xac dinh mot gia tri s la so hay khong?
     def is_number(s):
         try:
             complex(s) # for int, long, float and complex
@@ -34,6 +35,7 @@ with open(inputfile, 'r') as csvFile:
             return False
         return True
 
+    #kiem tra kieu du lieu cua 1 cot
     def checkDataTypeOfCol(col):
         datatype = 'numeric' #0 la nominal, 1 la numeric
         for x in range(1, nrow):
@@ -41,16 +43,17 @@ with open(inputfile, 'r') as csvFile:
                 datatype = 'nominal'
         return datatype
 
-    #cau i
+    #cau i - SUMMARY
     def summary():            
-        #check thuoc tinh va kieu du lieu
+        #ghi ra file log
         for y in range(0, ncol):
             log_file.write('Thuoc tinh ' + str(y+1) + ': ' + data[0][y])  
             if (checkDataTypeOfCol(y) == 'nominal'):
                 log_file.write(', nominal\n')
             else:
                 log_file.write(', numeric\n')
-    
+
+    #dem so gia tri thieu trong 1 cot, gia tri thieu la dau cham hoi '?'
     def countMissingValues(col):
         missingvalues = 0
         for x in range(1, nrow):
@@ -58,6 +61,7 @@ with open(inputfile, 'r') as csvFile:
                 missingvalues += 1 
         return missingvalues
 
+    #dem so lan xuat hien cua 1 text trong cot
     def countSoLanXuatHien(value,col):
         count = 0
         for x in range(1, nrow):
@@ -65,6 +69,7 @@ with open(inputfile, 'r') as csvFile:
                 count += 1
         return count
 
+    #text xuat hien nhieu nhat trong cot
     def xuatHienNhieuNhat(col):
         max = countSoLanXuatHien(data[1][col],col)
         result = data[1][col]
@@ -73,21 +78,23 @@ with open(inputfile, 'r') as csvFile:
                 result = data[x][col]
         return result
 
+    #xac dinh du lieu thay vao '?' la nominal hay numeric
+    #neu la nominal thi tim gia tri xuat hien nhieu nhat
+    #neu la numeric thi tim gia tri trung binh cua cot
     def dataToReplace(col, check):
         if (check == 1): #tinh trung binh cua cot
             sum = 0
             for x in range(1, nrow):
                 if (data[x][col] != '?'):
                     sum += float(data[x][col])
-            return sum
+            return sum/ncol
         elif (check == 0): #tim xuat hien nhieu nhat trong cot
             return xuatHienNhieuNhat(col)
 
-    #cau ii
+    #cau ii - REPLACE
     def replace():
-        #check thuoc tinh va kieu du lieu
+        #ghi ra file log
         for y in range(0, ncol):
-            check = 0
             log_file.write('Thuoc tinh ' + str(y+1) + ': ' + data[0][y] + ', ')
             log_file.write(str(countMissingValues(y)))
             if (countMissingValues(y) != 0):
@@ -95,12 +102,12 @@ with open(inputfile, 'r') as csvFile:
                     mostText = dataToReplace(y,0)
                     log_file.write(", " + str(mostText) + '\n')
                 else:
-                    avg = dataToReplace(y,1)/ncol
+                    avg = dataToReplace(y,1)
                     log_file.write(", " + str(avg) + '\n')
             else:
                 log_file.write('\n')
 
-        #write to output file - REPLACE
+        #ghi ra file output
         #write header
         for x in range(1):
             for y in range(0, ncol):
@@ -115,7 +122,7 @@ with open(inputfile, 'r') as csvFile:
                         mostText = dataToReplace(y,0)
                         output_file.write(str(mostText))
                     else:
-                        avg = dataToReplace(y,1)/ncol
+                        avg = dataToReplace(y,1)
                         output_file.write(str(avg))
                     if (y < ncol - 1):
                             output_file.write(',')
