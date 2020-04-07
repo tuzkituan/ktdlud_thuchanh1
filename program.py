@@ -6,8 +6,9 @@ inputfile = sys.argv[2]
 outputfile = sys.argv[3]
 logfile = sys.argv[4]
   
-# initializing the titles and rows list 
+# files
 log_file = open(logfile,"w")
+output_file = open(outputfile,'w')
 
 #read csv
 with open(inputfile, 'r') as csvFile:
@@ -33,18 +34,21 @@ with open(inputfile, 'r') as csvFile:
             return False
         return True
 
+    def checkDataTypeOfCol(col):
+        datatype = 'numeric' #0 la nominal, 1 la numeric
+        for x in range(1, nrow):
+            if (is_number(data[x][col]) == False and data[x][col] != '?'):
+                datatype = 'nominal'
+        return datatype
+
     #cau i
     def summary():            
         #check thuoc tinh va kieu du lieu
         for y in range(0, ncol):
-            check = 0
             log_file.write('Thuoc tinh ' + str(y+1) + ': ' + data[0][y])  
-            for x in range(1, nrow):
-                if (is_number(data[x][y]) == False):
-                    log_file.write(', nominal\n')
-                    check = 1
-                    break
-            if (check == 0):
+            if (checkDataTypeOfCol(y) == 'nominal'):
+                log_file.write(', nominal\n')
+            else:
                 log_file.write(', numeric\n')
     
     def countMissingValues(col):
@@ -70,12 +74,13 @@ with open(inputfile, 'r') as csvFile:
         return result
 
     def dataToReplace(col, check):
-        if (check == 1):
+        if (check == 1): #tinh trung binh cua cot
             sum = 0
             for x in range(1, nrow):
-                sum += float(data[x][col])
+                if (data[x][col] != '?'):
+                    sum += float(data[x][col])
             return sum
-        elif (check == 0):
+        elif (check == 0): #tim xuat hien nhieu nhat trong cot
             return xuatHienNhieuNhat(col)
 
     #cau ii
@@ -86,18 +91,40 @@ with open(inputfile, 'r') as csvFile:
             log_file.write('Thuoc tinh ' + str(y+1) + ': ' + data[0][y] + ', ')
             log_file.write(str(countMissingValues(y)))
             if (countMissingValues(y) != 0):
-                for x in range(1, nrow):
-                    if (is_number(data[x][y]) == False):
-                        mostText = dataToReplace(y,0)
-                        log_file.write(", " + str(mostText) + '\n')
-                        check = 1
-                        break
-                if (check == 0):
-                    avg = dataToReplace(y,1)
+                if (checkDataTypeOfCol(y) == 'nominal'):
+                    mostText = dataToReplace(y,0)
+                    log_file.write(", " + str(mostText) + '\n')
+                else:
+                    avg = dataToReplace(y,1)/ncol
                     log_file.write(", " + str(avg) + '\n')
             else:
                 log_file.write('\n')
-                
+
+        #write to output file - REPLACE
+        #write header
+        for x in range(1):
+            for y in range(0, ncol):
+                output_file.write(data[x][y])
+                if (y < ncol - 1):
+                    output_file.write(',')
+        #write body
+        for x in range(nrow):
+            for y in range(ncol):
+                if (data[x][y]=='?'):
+                    if (checkDataTypeOfCol(y) == 'nominal'):
+                        mostText = dataToReplace(y,0)
+                        output_file.write(str(mostText))
+                    else:
+                        avg = dataToReplace(y,1)/ncol
+                        output_file.write(str(avg))
+                    if (y < ncol - 1):
+                            output_file.write(',')
+                else:
+                    output_file.write(data[x][y])
+                    if (y < ncol - 1):
+                        output_file.write(',')
+            output_file.write('\n')
+
 #main
 if option in ("summary"): 
     summary()

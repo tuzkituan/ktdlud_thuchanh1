@@ -1,7 +1,7 @@
 9
 5
-Thuoc tinh 1: title1, 1, 9
+Thuoc tinh 1: title1, 1, 9.8
 Thuoc tinh 2: title2, 0
-Thuoc tinh 3: title3, 1, 4
+Thuoc tinh 3: title3, 1, 6.8
 Thuoc tinh 4: title4, 0
 Thuoc tinh 5: title5, 1, e
