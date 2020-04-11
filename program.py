@@ -38,7 +38,7 @@ with open(inputfile, 'r') as csvFile:
                 datatype = 'nominal'
         return datatype
 
-    #cau i - SUMMARY
+    #CAU 1 - SUMMARY -------------------------------------------------
     def summary():            
         #ghi ra file log
         log_file.write(str(nrow - 1) + '\n')
@@ -90,7 +90,7 @@ with open(inputfile, 'r') as csvFile:
         elif (check == 0): #tim xuat hien nhieu nhat trong cot
             return xuatHienNhieuNhat(col)
 
-    #cau ii - REPLACE
+    #CAU 2- REPLACE  -------------------------------------------------
     def replace():
         #ghi ra file log
         log_file.write(str(nrow - 1) + '\n')
@@ -126,7 +126,8 @@ with open(inputfile, 'r') as csvFile:
                         output_file.write(',')
             output_file.write('\n')
 
-    #chia gio
+    #CAU III - CHIA GIO ----------------------------------------------
+    
     def Minx(col):
         min = float(data[1][col])
         for x in range(1, nrow):
@@ -141,26 +142,27 @@ with open(inputfile, 'r') as csvFile:
                 max = float(data[x][col])
         return int(max)
 
+    #CHIA GIO THEO CHIEU RONG ----------------------------------------
     #kiem tra 1 gia tri trong cot co trong 1 gio xac dinh hay khong
-    def checkLineInGio(value, col, giaTriDau, giaTriCuoi):
+    def checkLineInGioTheoChieuRong(value, col, giaTriDau, giaTriCuoi):
         if (float(value) >= float(giaTriDau) and float(value) < float(giaTriCuoi)):
             return True
         return False
 
     #dem so dong cung 1 gio xac dinh [giaTriDau, giaTriCuoi)
-    def countRowsCungGio(col, giaTriDau, giaTriCuoi):
+    def countRowsCungGioTheoChieuRong(col, giaTriDau, giaTriCuoi):
         count = 0
         #dem gia tri = max
         if (float(giaTriCuoi) == float(Maxx(col))):
             count += 1
         #dem gia tri != max
         for x in range(1, nrow):
-            if (checkLineInGio(data[x][col], col, giaTriDau, giaTriCuoi)):
+            if (checkLineInGioTheoChieuRong(data[x][col], col, giaTriDau, giaTriCuoi)):
                 count += 1
         return count
 
     #chia gio cho 1 cot, return 1 list cac gio cua cot do
-    def chiaGio(dataList, col, sogio):
+    def chiaGioChieuRong(sogio, col):
         lengio = int((Maxx(col) - Minx(col))/sogio)
         #do rong cua gio = 0, gan = 1
         if (lengio == 0): 
@@ -187,28 +189,16 @@ with open(inputfile, 'r') as csvFile:
                 firstValue += lengio
         return gioList
 
-    #sap xep 1 cot tang dan, sau do thuc hien ham chiaGio
-    #return gioList danh sach cac gio cua 1 cot
-    def chiaGioDaSapXep(sogio, col):
-        #chia thanh cac gio
-        #sap xep lai cot theo tang dan, gan vao data_to_sort
-        data_to_sort = []
-        for x in range(1, nrow):
-            data_to_sort.append(data[x][col])
-        data_to_sort.sort()
-        gioList = chiaGio(data_to_sort, col, sogio)
-        return gioList
-
     def writeLogTheoChieuRong(sogio):
         #ghi file log
         for col in range(0,ncol):
             if (checkDataTypeOfCol(col) == 'numeric'):  
-                gioList = chiaGioDaSapXep(sogio, col)
+                gioList = chiaGioChieuRong(sogio, col)
                 log_file.write('Thuoc tinh: ' + data[0][col] + ', ')
                 for x in range(0, sogio):
                     firstvalue = gioList[x][0]
                     lastvalue = gioList[x][1]
-                    count = countRowsCungGio(col, firstvalue, lastvalue)
+                    count = countRowsCungGioTheoChieuRong(col, firstvalue, lastvalue)
                     log_file.write('[' + str(firstvalue) + ', ' + str(lastvalue) + '): ' + str(count))
                     if (x < sogio - 1):
                         log_file.write(', ')
@@ -216,8 +206,8 @@ with open(inputfile, 'r') as csvFile:
                         log_file.write('\n')
 
     #lay ra MIEN GIA TRI cua 1 gia tri bat ky trong bang
-    def getGioOf1Cell(sogio, col, value):
-        gioList = chiaGioDaSapXep(sogio, col)
+    def getGioOf1CellTheoChieuRong(sogio, col, value):
+        gioList = chiaGioChieuRong(sogio, col)
         for x in range(0, sogio):
             firstvalue = gioList[x][0]
             lastvalue = gioList[x][1]
@@ -234,7 +224,7 @@ with open(inputfile, 'r') as csvFile:
         for x in range(1,nrow):
             for y in range(0,ncol):
                 if (checkDataTypeOfCol(y) == 'numeric'):
-                    firstvalue, lastvalue = getGioOf1Cell(sogio, y, data[x][y])
+                    firstvalue, lastvalue = getGioOf1CellTheoChieuRong(sogio, y, data[x][y])
                     output_file.write('[' + str(firstvalue) + ',' + str(lastvalue) + '),')
                 else:
                     output_file.write(data[x][y])
@@ -242,6 +232,8 @@ with open(inputfile, 'r') as csvFile:
                         output_file.write(',')
             output_file.write('\n')
 
+
+    #MAIN CHIA GIO ---------------------------------------------------
     def discretize(): 
         print ("Nhap so gio va phuong phap chia: ")
         print ("(1 la chia theo chieu rong, 2 la chia theo chieu sau.)") 
@@ -250,9 +242,10 @@ with open(inputfile, 'r') as csvFile:
         if (pp == 1):
             writeOutputTheoChieuRong(sogio)
             writeLogTheoChieuRong(sogio)
-
             
-#main
+            
+            
+#main ----------------------------------------------------------------
 if option in ("summary"): 
     summary()
 
