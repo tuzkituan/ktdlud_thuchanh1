@@ -1,0 +1,28 @@
+def Minx(col):
+    min = float(data[1][col])
+    for x in range(1, nrow):
+        if (float(data[x][col]) < min):
+            min = float(data[x][col])
+    return min
+
+def Maxx(col):
+    max = float(data[1][col])
+    for x in range(1, nrow):
+        if (float(data[x][col])> max):
+            max = float(data[x][col])
+    return max
+
+def Chiagiotheochieurong(sogio,y):
+    lengio = int((Maxx(y) - Minx(y)) / sogio)
+    min = Minx(y)
+    for x in range(1, nrow):
+        if (float(data[x][y]) > min*(sogio-1)):
+            output_file.write('[' + str(min*(sogio-1)) + ',' + str(max) + ')')
+        for mingio in range (sogio-1,1,-1):
+            if (float(data[x][y]) > min):
+                a = min + lengio
+                output_file.write('[' + str(mingio) + ',' + str(a) + ')')
+def discretize(sogio,pp): 
+    for y in range(0, ncol):
+        if (checkDataTypeOfCol(y) == 'numeric'):    
+            Chiagiotheochieurong(sogio,y)
