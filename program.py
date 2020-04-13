@@ -233,6 +233,16 @@ with open(inputfile, 'r') as csvFile:
                         output_file.write(',')
             output_file.write('\n')
 
+    #MAIN CHIA GIO ---------------------------------------------------
+    def discretize(): 
+        print ("Nhap so gio va phuong phap chia: ")
+        print ("(1 la chia theo chieu rong, 2 la chia theo chieu sau.)") 
+        sogio = int(input('Nhap so gio: '))
+        pp = int(input('Phuong phap: '))
+        if (pp == 1):
+            writeOutputTheoChieuRong(sogio)
+            writeLogTheoChieuRong(sogio)
+
 
     #CAU IV - CHUAN HOA ------------------------------------------------
     #chuan hoa 1 phan tu
@@ -310,19 +320,18 @@ with open(inputfile, 'r') as csvFile:
                 if (y < ncol - 1):
                             output_file.write(',')
             output_file.write('\n')
+  
+    #MAIN CHUAN HOA ---------------------------------------------------
+    def normalize(): 
+        print ("Chuan hoa cac thuoc tinh co kieu numeric")
+        print ("1: Chuan hoa Min-max, 2: Chuan hoa Z-score")
+        a = int(input('Nhap phuong phap chuan hoa: '))
+        if a == 1:
+            chuanhoaMinmax()
+        else:
+            chuanhoaZscore()
 
-    #MAIN CHIA GIO ---------------------------------------------------
-    def discretize(): 
-        print ("Nhap so gio va phuong phap chia: ")
-        print ("(1 la chia theo chieu rong, 2 la chia theo chieu sau.)") 
-        sogio = int(input('Nhap so gio: '))
-        pp = int(input('Phuong phap: '))
-        if (pp == 1):
-            writeOutputTheoChieuRong(sogio)
-            writeLogTheoChieuRong(sogio)
-            
-            
-            
+
 #main ----------------------------------------------------------------
 if option in ("summary"): 
     summary()
@@ -334,10 +343,4 @@ elif option in ("discretize"):
     discretize()
 
 elif option in ("normalize"): 
-    print ("Chuan hoa cac thuoc tinh co kieu numeric")
-    print ("1: Chuan hoa Min-max, 2: Chuan hoa Z-score")
-    a = int(input('Nhap phuong phap chuan hoa: '))
-    if a == 1:
-        chuanhoaMinmax()
-    else:
-        chuanhoaZscore()
+    normalize()
