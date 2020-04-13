@@ -1,4 +1,5 @@
 import sys, csv
+import numpy as np
 
 #read cac tham so trong command line   
 option = sys.argv[1]
@@ -233,6 +234,83 @@ with open(inputfile, 'r') as csvFile:
             output_file.write('\n')
 
 
+    #CAU IV - CHUAN HOA ------------------------------------------------
+    #chuan hoa 1 phan tu
+    def chuanhoa1ptMM(a,col,mien1,mien2):
+        min = float(Minx(col))
+        max = float(Maxx(col))
+        a = float((a-min)/(max-min)*(abs(mien2-mien1)) + mien1)
+        return a
+    #Chuan hoa du lieu
+    def chuanhoaMinmax():
+        #hoi mien gia tri
+        print("mien gia tri de chuan hoa du lieu: ")
+        a = int(input())
+        b = int(input())
+        #ghi file log
+        for y in range(0, ncol):
+            if (checkDataTypeOfCol(y)== "numeric"):
+                log_file.write('Thuoc tinh ' + str(y+1) + ': ' + data[0][y]+ ',' +'['+str(a)+','+str(b)+']'+'\n')
+        #ghi file output
+        for y in range(ncol):
+            output_file.write(data[0][y])
+            if (y < ncol - 1):
+                output_file.write(',')
+        output_file.write('\n')
+        for x in range(1, nrow):
+            for y in range(ncol):
+                if (checkDataTypeOfCol(y) == 'numeric'):              
+                        m = str(chuanhoa1ptMM(float(data[x][y]),y,a,b))
+                        output_file.write(m)    
+                else:
+                        output_file.write(data[x][y])  
+                if (y < ncol - 1):
+                            output_file.write(',')
+            output_file.write('\n')
+
+    #Ham  tinh trung binh thuoc tinh
+    def tinhTBthuoctinh(col):
+        sum = 0
+        for x in range(1, nrow):
+             sum += float(data[x][col])
+        return sum/nrow
+    #Ham tinh do lech chuan
+    def tinhDolechchuan(col):
+        array=[]
+        for x in range(1,nrow):
+            array.append(float(data[x][col]))
+        return np.std(array, dtype = np.float32)
+
+    #chuan hoa 1 phan tu Zscore
+    def chuanhoa1ptZS(a,col):
+        a = (a - tinhTBthuoctinh(col))/tinhDolechchuan(col)
+        return a
+
+    #Chuan hoa du lieu Zscore
+    def chuanhoaZscore():
+        
+        #ghi file log
+        for y in range(0, ncol):
+            if (checkDataTypeOfCol(y)== "numeric"):
+                log_file.write('Thuoc tinh ' + str(y+1) + ': ' + data[0][y] +'\n')
+           
+        #ghi file output
+        for y in range(ncol):
+            output_file.write(data[0][y])
+            if (y < ncol - 1):
+                output_file.write(',')
+        output_file.write('\n')
+        for x in range(1, nrow):
+            for y in range(ncol):
+                if (checkDataTypeOfCol(y) == 'numeric'):              
+                    m = str(chuanhoa1ptZS(float(data[x][y]),y))          
+                    output_file.write(m)    
+                else:
+                        output_file.write(data[x][y])  
+                if (y < ncol - 1):
+                            output_file.write(',')
+            output_file.write('\n')
+
     #MAIN CHIA GIO ---------------------------------------------------
     def discretize(): 
         print ("Nhap so gio va phuong phap chia: ")
@@ -256,4 +334,10 @@ elif option in ("discretize"):
     discretize()
 
 elif option in ("normalize"): 
-    print ("Cau iv. Chuan hoa cac thuoc tinh co kieu numeric") 
+    print ("Chuan hoa cac thuoc tinh co kieu numeric")
+    print ("1: Chuan hoa Min-max, 2: Chuan hoa Z-score")
+    a = int(input('Nhap phuong phap chuan hoa: '))
+    if a == 1:
+        chuanhoaMinmax()
+    else:
+        chuanhoaZscore()

@@ -1,0 +1,2 @@
+L-CORE,L-SURF,L-O2,L-BP,SURF-STBL,CORE-STBL,BP-STBL,COMFORT,decision ADM-DECS
+low,mid,good,high,unstable,stable,stable,
