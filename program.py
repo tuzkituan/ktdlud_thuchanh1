@@ -249,7 +249,7 @@ with open(inputfile, 'r') as csvFile:
     def chuanhoa1ptMM(a,col,mien1,mien2):
         min = float(Minx(col))
         max = float(Maxx(col))
-        a = float((a-min)/(max-min)*(abs(mien2-mien1)) + mien1)
+        a = float(((a-min)/(max-min))*(abs(mien2-mien1)) + mien1)
         return a
     #Chuan hoa du lieu
     def chuanhoaMinmax():
@@ -259,7 +259,7 @@ with open(inputfile, 'r') as csvFile:
         b = int(input())
         #ghi file log
         for y in range(0, ncol):
-            if (checkDataTypeOfCol(y)== "numeric"):
+            if (checkDataTypeOfCol(y)== "numeric") and Maxx(y)!=Minx(y):
                 log_file.write('Thuoc tinh ' + str(y+1) + ': ' + data[0][y]+ ',' +'['+str(a)+','+str(b)+']'+'\n')
         #ghi file output
         for y in range(ncol):
@@ -269,7 +269,7 @@ with open(inputfile, 'r') as csvFile:
         output_file.write('\n')
         for x in range(1, nrow):
             for y in range(ncol):
-                if (checkDataTypeOfCol(y) == 'numeric'):              
+                if (checkDataTypeOfCol(y) == 'numeric') and Maxx(y)!=Minx(y):              
                         m = str(chuanhoa1ptMM(float(data[x][y]),y,a,b))
                         output_file.write(m)    
                 else:
@@ -301,7 +301,7 @@ with open(inputfile, 'r') as csvFile:
         
         #ghi file log
         for y in range(0, ncol):
-            if (checkDataTypeOfCol(y)== "numeric"):
+            if (checkDataTypeOfCol(y)== "numeric") and Maxx(y)!=Minx(y):
                 log_file.write('Thuoc tinh ' + str(y+1) + ': ' + data[0][y] +'\n')
            
         #ghi file output
@@ -312,7 +312,7 @@ with open(inputfile, 'r') as csvFile:
         output_file.write('\n')
         for x in range(1, nrow):
             for y in range(ncol):
-                if (checkDataTypeOfCol(y) == 'numeric'):              
+                if (checkDataTypeOfCol(y) == 'numeric') and Maxx(y)!=Minx(y):              
                     m = str(chuanhoa1ptZS(float(data[x][y]),y))          
                     output_file.write(m)    
                 else:
