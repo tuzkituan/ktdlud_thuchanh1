@@ -233,6 +233,27 @@ with open(inputfile, 'r') as csvFile:
                         output_file.write(',')
             output_file.write('\n')
 
+    #CHIA GIO THEO DO SAU
+    def sapxepMang(col):
+        array = []
+        if (checkDataTypeOfCol(col) == "numeric"):
+            for x in range(1,nrow):
+                array.append(float(data[x][col]))
+        array.sort()
+        return array
+
+    #chia theo do sau:
+    def discretizeTheoDoSau(sogio):
+        lengio = int(round(nrow/sogio)) #so luong cua 1 gio
+        for x in range(1, nrow):
+            for y in range(0, ncol):
+                if (checkDataTypeOfCol(y) == "numeric"): 
+                    array = sapxepMang(y) #sap xep cot y tang dan           
+                    for z in range(1,lengio): 
+                        if (float(data[x][y]) <= array[z*lengio]):
+                            output_file.write('['+str(array[(z-1)*lengio])+','+str(array[lengio*z])+']\n')
+                            break
+
     #MAIN CHIA GIO ---------------------------------------------------
     def discretize(): 
         print ("Nhap so gio va phuong phap chia: ")
@@ -242,6 +263,8 @@ with open(inputfile, 'r') as csvFile:
         if (pp == 1):
             writeOutputTheoChieuRong(sogio)
             writeLogTheoChieuRong(sogio)
+        elif (pp == 2):
+            discretizeTheoDoSau(sogio)
 
 
     #CAU IV - CHUAN HOA ------------------------------------------------
