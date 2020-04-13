@@ -242,17 +242,72 @@ with open(inputfile, 'r') as csvFile:
         array.sort()
         return array
 
+    
+    def chiaMiengiatri(col,sogio):
+        gioList = []
+        array = sapxepMang(col)
+        lengio = int((nrow-1)/sogio) #so luong cua 1 gio
+        if (nrow%sogio !=0):
+            lengio +=1
+        #chia gio
+        for z in range(0,sogio-1):
+            gioListChild = [array[(z)*lengio], array[(lengio)*(z+1)-1]]
+            gioList.append(gioListChild)
+            a = array[(lengio)*(z+1)]
+        gioListChild = [a,array[len(array)-1]]
+        gioList.append(gioListChild)
+        return gioList
+
     #chia theo do sau:
     def discretizeTheoDoSau(sogio):
-        lengio = int(round(nrow/sogio)) #so luong cua 1 gio
-        for x in range(1, nrow):
-            for y in range(0, ncol):
-                if (checkDataTypeOfCol(y) == "numeric"): 
-                    array = sapxepMang(y) #sap xep cot y tang dan           
-                    for z in range(1,lengio): 
-                        if (float(data[x][y]) <= array[z*lengio]):
-                            output_file.write('['+str(array[(z-1)*lengio])+','+str(array[lengio*z])+']\n')
+        lengio = int((nrow-1)/sogio) #so luong cua 1 gio
+        if (nrow%sogio !=0):
+            lengio +=1
+            dem=lengio
+         #ghi file log
+        for col in range(0,ncol):
+            if (checkDataTypeOfCol(col) == 'numeric'):  
+                giolist = chiaMiengiatri(col,sogio)
+                log_file.write('Thuoc tinh: ' + data[0][col] + ', ')
+                for x in range(0,len(giolist)): 
+                    if (x != len(giolist)-1):
+                        log_file.write('['+str(giolist[x][0])+','+str(giolist[x][1])+']: '+str(dem)+', ')
+                    
+                    else:
+                        log_file.write('['+str(giolist[x][0])+','+str(giolist[x][1])+']: '+str((nrow-1)-lengio*(sogio-1))+'\n')
+                        break
+        #ghi file output
+        
+        for y in range(0,ncol):
+            output_file.write(data[0][y])
+            if (y < ncol - 1):
+                output_file.write(',')
+        output_file.write('\n')
+        for x in range(1,nrow):
+            for y in range(0,ncol):
+                if (checkDataTypeOfCol(y) == 'numeric'):
+                    gio = chiaMiengiatri(y,sogio)
+                    a=[0]*lengio
+                    for z in range(0, len(gio)):
+                        
+                        if (float(data[x][y]) < gio[z][1] and float(data[x][y]) >= gio[z][0]):
+                            output_file.write('['+str(giolist[z][0])+','+str(giolist[z][1])+'],')
+                            a[z]+=1
                             break
+                        elif (float(data[x][y]) == gio[z][1] and a[z]==lengio):
+                            continue
+                        elif (float(data[x][y]) == gio[z][1] and a[z]<lengio):
+                            output_file.write('['+str(giolist[z][0])+','+str(giolist[z][1])+'],')
+                            a[z]+=1
+                            break
+
+                else:
+                    output_file.write(data[x][y])
+                    if (y < ncol - 1):
+                        output_file.write(',')
+            output_file.write('\n')
+            
+                    
 
     #MAIN CHIA GIO ---------------------------------------------------
     def discretize(): 
