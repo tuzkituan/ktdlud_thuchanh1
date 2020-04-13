@@ -8,14 +8,44 @@ python program.py replace DATASET/DATA1/TH1.txt DATASET/DATA1/output_TH1.txt DAT
 python program.py discretize DATASET/DATA1/TH1.txt DATASET/DATA1/output_TH1.txt DATASET/DATA1/log_TH1.txt 
 python program.py normalize DATASET/DATA1/TH1.txt DATASET/DATA1/output_TH1.txt DATASET/DATA1/log_TH1.txt 
 
+python program.py summary DATASET/DATA1/TH2.txt DATASET/DATA1/output_TH2.txt DATASET/DATA1/log_TH2.txt 
+python program.py replace DATASET/DATA1/TH2.txt DATASET/DATA1/output_TH2.txt DATASET/DATA1/log_TH2.txt 
+python program.py discretize DATASET/DATA1/TH2.txt DATASET/DATA1/output_TH2.txt DATASET/DATA1/log_TH2.txt 
+python program.py normalize DATASET/DATA1/TH2.txt DATASET/DATA1/output_TH2.txt DATASET/DATA1/log_TH2.txt 
+
+python program.py summary DATASET/DATA1/TH3.txt DATASET/DATA1/output_TH3.txt DATASET/DATA1/log_TH3.txt 
+python program.py replace DATASET/DATA1/TH3.txt DATASET/DATA1/output_TH3.txt DATASET/DATA1/log_TH3.txt 
+python program.py discretize DATASET/DATA1/TH3.txt DATASET/DATA1/output_TH3.txt DATASET/DATA1/log_TH3.txt 
+python program.py normalize DATASET/DATA1/TH3.txt DATASET/DATA1/output_TH3.txt DATASET/DATA1/log_TH3.txt
+
 DATASET_2:
 python program.py summary DATASET/DATA2/TH1.txt DATASET/DATA2/output_TH1.txt DATASET/DATA2/log_TH1.txt 
 python program.py replace DATASET/DATA2/TH1.txt DATASET/DATA2/output_TH1.txt DATASET/DATA2/log_TH1.txt 
 python program.py discretize DATASET/DATA2/TH1.txt DATASET/DATA2/output_TH1.txt DATASET/DATA2/log_TH1.txt 
 python program.py normalize DATASET/DATA2/TH1.txt DATASET/DATA2/output_TH1.txt DATASET/DATA2/log_TH1.txt 
 
+python program.py summary DATASET/DATA2/TH2.txt DATASET/DATA2/output_TH2.txt DATASET/DATA2/log_TH2.txt 
+python program.py replace DATASET/DATA2/TH2.txt DATASET/DATA2/output_TH2.txt DATASET/DATA2/log_TH2.txt 
+python program.py discretize DATASET/DATA2/TH2.txt DATASET/DATA2/output_TH2.txt DATASET/DATA2/log_TH2.txt 
+python program.py normalize DATASET/DATA2/TH2.txt DATASET/DATA2/output_TH2.txt DATASET/DATA2/log_TH2.txt 
+
+python program.py summary DATASET/DATA2/TH3.txt DATASET/DATA2/output_TH3.txt DATASET/DATA2/log_TH3.txt 
+python program.py replace DATASET/DATA2/TH3.txt DATASET/DATA2/output_TH3.txt DATASET/DATA2/log_TH3.txt 
+python program.py discretize DATASET/DATA2/TH3.txt DATASET/DATA2/output_TH3.txt DATASET/DATA2/log_TH3.txt 
+python program.py normalize DATASET/DATA2/TH3.txt DATASET/DATA2/output_TH3.txt DATASET/DATA2/log_TH3.txt 
+
 DATASET_3:
 python program.py summary DATASET/DATA3/TH1.txt DATASET/DATA3/output_TH1.txt DATASET/DATA3/log_TH1.txt 
 python program.py replace DATASET/DATA3/TH1.txt DATASET/DATA3/output_TH1.txt DATASET/DATA3/log_TH1.txt 
 python program.py discretize DATASET/DATA3/TH1.txt DATASET/DATA3/output_TH1.txt DATASET/DATA3/log_TH1.txt 
 python program.py normalize DATASET/DATA3/TH1.txt DATASET/DATA3/output_TH1.txt DATASET/DATA3/log_TH1.txt 
+
+python program.py summary DATASET/DATA3/TH2.txt DATASET/DATA3/output_TH2.txt DATASET/DATA3/log_TH2.txt 
+python program.py replace DATASET/DATA3/TH2.txt DATASET/DATA3/output_TH2.txt DATASET/DATA3/log_TH2.txt 
+python program.py discretize DATASET/DATA3/TH2.txt DATASET/DATA3/output_TH2.txt DATASET/DATA3/log_TH2.txt 
+python program.py normalize DATASET/DATA3/TH2.txt DATASET/DATA3/output_TH2.txt DATASET/DATA3/log_TH2.txt 
+
+python program.py summary DATASET/DATA3/TH3.txt DATASET/DATA3/output_TH3.txt DATASET/DATA3/log_TH3.txt 
+python program.py replace DATASET/DATA3/TH3.txt DATASET/DATA3/output_TH3.txt DATASET/DATA3/log_TH3.txt 
+python program.py discretize DATASET/DATA3/TH3.txt DATASET/DATA3/output_TH3.txt DATASET/DATA3/log_TH3.txt 
+python program.py normalize DATASET/DATA3/TH3.txt DATASET/DATA3/output_TH3.txt DATASET/DATA3/log_TH3.txt 
